@@ -21,12 +21,11 @@ def add_headers(response):
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    print("inside method call.......")
     cursor = connection.cursor()
     cursor.execute(queries.FETCH_EVENT_DETAILS)
     data = cursor.fetchall()
     cursor.close()
-    print("featched...",data)
+    print("Featched Data...",data)
     return jsonify(data)
 
 @app.route('/api/create/event', methods=['POST'])
