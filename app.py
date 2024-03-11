@@ -2,16 +2,24 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import mysql.connector
 import queries
+import pymysql
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow requests from the React frontend
 
 # Connect to MySQL
-connection = mysql.connector.connect(
-    host='127.0.0.1',
-    user='root',
-    password='Gkishan@#1349',
-    database='allevents'
+timeout = 10
+connection = pymysql.connect(
+  charset="utf8mb4",
+  connect_timeout=timeout,
+  cursorclass=pymysql.cursors.DictCursor,
+  db="defaultdb",
+  host="allevents-allevents.a.aivencloud.com",
+  password="AVNS_A7E9yiOYvidq9eF9RZZ",
+  read_timeout=timeout,
+  port=28709,
+  user="avnadmin",
+  write_timeout=timeout,
 )
 
 @app.after_request
@@ -21,11 +29,12 @@ def add_headers(response):
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
+    print("inside method call.......")
     cursor = connection.cursor()
     cursor.execute(queries.FETCH_EVENT_DETAILS)
     data = cursor.fetchall()
     cursor.close()
-    print("Featched Data...",data)
+    print("featched...",data)
     return jsonify(data)
 
 @app.route('/api/create/event', methods=['POST'])
