@@ -9,18 +9,23 @@ app = Flask(__name__)
 
 # Connect to MySQL
 timeout = 10
-connection = pymysql.connect(
-  charset="utf8mb4",
-  connect_timeout=timeout,
-  cursorclass=pymysql.cursors.DictCursor,
-  db="defaultdb",
-  host="allevents-allevents.a.aivencloud.com",
-  password="AVNS_A7E9yiOYvidq9eF9RZZ",
-  read_timeout=timeout,
-  port=28709,
-  user="avnadmin",
-  write_timeout=timeout,
-)
+try:
+    connection = pymysql.connect(
+        charset="utf8mb4",
+        connect_timeout=timeout,
+        cursorclass=pymysql.cursors.DictCursor,
+        db="defaultdb",
+        host="allevents-allevents.a.aivencloud.com",
+        password="AVNS_A7E9yiOYvidq9eF9RZZ",
+        read_timeout=timeout,
+        port=28709,
+        user="avnadmin",
+        write_timeout=timeout,
+    )
+    print("Connected successfully!")
+except pymysql.Error as e:
+    print(f"Error connecting to MySQL: {e}")
+
 
 @app.after_request
 def add_headers(response):
