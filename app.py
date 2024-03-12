@@ -1,30 +1,23 @@
 from flask import Flask, jsonify, request
+import psycopg2
+import queries
 # from flask_cors import CORS
 # import mysql.connector
-import queries
-import pymysql
 
 app = Flask(__name__)
 # CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow requests from the React frontend
 
-# Connect to MySQL
-timeout = 10
 try:
-    connection = pymysql.connect(
-        charset="utf8mb4",
-        connect_timeout=timeout,
-        cursorclass=pymysql.cursors.DictCursor,
-        db="defaultdb",
-        host="allevents-allevents.a.aivencloud.com",
-        password="AVNS_A7E9yiOYvidq9eF9RZZ",
-        read_timeout=timeout,
-        port=28709,
-        user="avnadmin",
-        write_timeout=timeout,
+    connection = psycopg2.connect(
+        dbname="alleventsdb",
+        user="root",
+        password="VIFDIcP2e3VxrZ4ZhLOMCcFdGTQDDbI8",
+        host="dpg-cno4m7tjm4es73cf7a50-a.oregon-postgres.render.com",
+        port="5432",
     )
     print("Connected successfully!")
-except pymysql.Error as e:
-    print(f"Error connecting to MySQL: {e}")
+except psycopg2.Error as e:
+    print(f"Error connecting to PostgreSQL: {e}")
 
 
 @app.after_request
