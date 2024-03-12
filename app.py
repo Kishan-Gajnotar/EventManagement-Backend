@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
 import psycopg2
 import queries
-# from flask_cors import CORS
+from flask_cors import CORS
 # import mysql.connector
 
 app = Flask(__name__)
-# CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow requests from the React frontend
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow requests from the React frontend
 
 try:
     connection = psycopg2.connect(
