@@ -5,7 +5,7 @@ from flask_cors import CORS
 # import mysql.connector
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})  # Allow requests from the React frontend
+CORS(app, resources={r"/api/*": {"origins": "https://alleventsmanagement.netlify.app"}})  # Allow requests from the React frontend
 
 try:
     connection = psycopg2.connect(
