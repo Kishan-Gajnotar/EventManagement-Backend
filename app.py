@@ -27,8 +27,8 @@ def add_headers(response):
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    print("inside method call.......")
-    cursor = connection.cursor()
+    # print("inside method call.......")
+    cursor = connection.cursor() 
     cursor.execute(queries.FETCH_EVENT_DETAILS)
     data = cursor.fetchall()
     cursor.close()
