@@ -23,17 +23,20 @@ except psycopg2.Error as e:
 @app.after_request
 def add_headers(response):
     response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
-    return response
+    return jsonify(response)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
     # print("inside method call.......")
-    cursor = connection.cursor() 
-    cursor.execute(queries.FETCH_EVENT_DETAILS)
-    data = cursor.fetchall()
-    cursor.close()
-    print("featched...",data)
-    return jsonify(data)
+    try: 
+        cursor = connection.cursor() 
+        cursor.execute(queries.FETCH_EVENT_DETAILS)
+        data = cursor.fetchall()
+        cursor.close()
+        print("featched...",data)
+        return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': 'Failed to fetch data', 'details': str(e)}), 500
 
 @app.route('/api/create/event', methods=['POST'])
 def create_event():
@@ -62,7 +65,7 @@ def create_event():
         cursor.close()
         return jsonify({'message': 'Event created successfully'}), 201
     except Exception as e:
-        print(e)  # Print the caught exception for debugging
+        # print(e)  # Print the caught exception for debugging
         return jsonify({'error': 'Failed to create event', 'details': str(e)}), 500
 
 
