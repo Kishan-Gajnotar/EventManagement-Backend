@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import psycopg2
 import queries
 from flask_cors import CORS
-# import mysql.connector
+import mysql.connector
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "https://alleventsmanagement.netlify.app"}})  # Allow requests from the React frontend
@@ -23,20 +23,17 @@ except psycopg2.Error as e:
 @app.after_request
 def add_headers(response):
     response.headers['Cross-Origin-Opener-Policy'] = 'same-origin'
-    return jsonify(response)
+    return response
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
     # print("inside method call.......")
-    try: 
-        cursor = connection.cursor() 
-        cursor.execute(queries.FETCH_EVENT_DETAILS)
-        data = cursor.fetchall()
-        cursor.close()
-        print("featched...",data)
-        return jsonify(data)
-    except Exception as e:
-        return jsonify({'error': 'Failed to fetch data', 'details': str(e)}), 500
+    cursor = connection.cursor()
+    cursor.execute(queries.FETCH_EVENT_DETAILS)
+    data = cursor.fetchall()
+    cursor.close()
+    print("featched...",data)
+    return jsonify(data)
 
 @app.route('/api/create/event', methods=['POST'])
 def create_event():
@@ -65,7 +62,7 @@ def create_event():
         cursor.close()
         return jsonify({'message': 'Event created successfully'}), 201
     except Exception as e:
-        # print(e)  # Print the caught exception for debugging
+        print(e)  # Print the caught exception for debugging
         return jsonify({'error': 'Failed to create event', 'details': str(e)}), 500
 
 
