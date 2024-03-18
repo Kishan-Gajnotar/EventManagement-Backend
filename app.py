@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 import psycopg2
 import queries
 from flask_cors import CORS
-import mysql.connector
+# import mysql.connector
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "https://alleventsmanagement.netlify.app"}})  # Allow requests from the React frontend
